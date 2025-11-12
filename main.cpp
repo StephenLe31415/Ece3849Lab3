@@ -34,6 +34,8 @@ static Button btnReset(S2);
 // Joystick (axes + stick push). Pins from HAL pins.h (BOOSTERPACK1)
 static Joystick gJoystick(JSX, JSY, JS1);
 
+//SemaphoreHandle_t xMutexLcd;
+
 // Config
 #define INPUT_TICK_MS   10U
 #define FRUIT_TICK_MS   250U
@@ -52,6 +54,13 @@ int main(void)
     FPULazyStackingEnable();
 
     configureSystemClock();
+
+    /*
+    xMutexLcd = xSemaphoreCreateMutex();
+    if(!xMutexLcd) {
+        while(1);
+    }
+    */
 
 
     // Init buttons and joystick
@@ -168,7 +177,9 @@ static void vRenderTask(void *pvParameters)
     TickType_t last = xTaskGetTickCount();
     for(;;)
     {
+        //xSemaphoreTake(xMutexLcd, portMAX_DELAY);
         DrawGame(&gameState);
+        //xSemaphoreGive(xMutexLcd);
         vTaskDelayUntil(&last, pdMS_TO_TICKS(33));
     }
 }

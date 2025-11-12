@@ -51,6 +51,11 @@ void DrawScore(uint8_t score) {
     GrStringDrawCentered(&gContext, str, -1, 64, 15, false);
 }
 
+void drawGameOver() {
+    GrContextForegroundSet(&gContext, ClrYellow);
+    GrStringDrawCentered(&gContext, "Game Over", -1, 64, 64, false);
+}
+
 void DrawGame(const SnakeGameState* state)
 {
     (void)state; // not used for minimal version yet
@@ -60,12 +65,16 @@ void DrawGame(const SnakeGameState* state)
     GrContextForegroundSet(&gContext, ClrBlack);
     GrRectFill(&gContext, &full);
 
-    // Draw snake
-    for (uint8_t i = 0; i < snakeLength; ++i) {
-        drawCell(snake[i].x, snake[i].y, i == 0 ? ClrGreen : ClrYellow);
-    }
+    if(!state->isRunning) {
+        drawGameOver();
+    } else {
+        // Draw snake
+        for (uint8_t i = 0; i < snakeLength; ++i) {
+            drawCell(snake[i].x, snake[i].y, i == 0 ? ClrGreen : ClrYellow);
+        }
 
-    drawFruit();
+        drawFruit();
+    }
 
     DrawScore(score);
 

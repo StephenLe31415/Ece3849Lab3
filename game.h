@@ -37,7 +37,6 @@ void moveSnake(void);
 
 /****************** SCORE SYSTEM API ************************* */
 extern uint8_t score;           // Keep track of score --- MAX_SCORE = 256?
-extern bool isEaten;
 
 void eatFruit(uint8_t i);      // Increase score once the fruit is eaten
 
@@ -49,3 +48,5 @@ void generateFruitTick();
 // Basic API
 void ResetGame(void);
 void moveSnake(void);
+
+bool isColliding();

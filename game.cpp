@@ -50,51 +50,65 @@ void eatFruit(uint8_t fruitIndex) {
     }
 }
 
-void moveSnake()
-{
-    // Shift body so each segment follows the previous one
-    for (uint8_t i = snakeLength; i > 0; i--) {
-        snake[i] = snake[i - 1];
-    }
-
-    // Update head position based on direction with  wrap-around.
-    switch (gameState.currentDirection) {
-        case UP:
-            // If at the top and moving up => wrap to bottom
-            if (snake[0].y == 0) {
-                snake[0].y = (uint8_t)(GRID_SIZE - 1);
-            } else {
-                snake[0].y = (uint8_t)(snake[0].y - 1);
-            }
-            break;
-        case DOWN:
-            // If at the bottom and moving down => wrap to top
-            if (snake[0].y == GRID_SIZE - 1) {
-                snake[0].y = 0;
-            } else {
-                snake[0].y = (uint8_t)(snake[0].y + 1);
-            }
-            break;
-        case LEFT:
-            if (snake[0].x == 0) {
-                snake[0].x = (uint8_t)(GRID_SIZE - 1);
-            } else {
-                snake[0].x = (uint8_t)(snake[0].x - 1);
-            }
-            break;
-        case RIGHT:
-            if (snake[0].x == GRID_SIZE - 1) {
-                snake[0].x = 0;
-            } else {
-                snake[0].x = (uint8_t)(snake[0].x + 1);
-            }
-            break;
-    }
-
-    //Check if head is covering fruit
-    for(int i = 0; i < fruitSize; i ++) {
-        if(snake[0].x == fruit[i].x && snake[0].y == fruit[i].y) {
-            eatFruit(i);
+bool isColliding() {
+    for(int i = 1; i < snakeLength; i ++) {
+        if(snake[0].x == snake[i].x && snake[0].y == snake[i].y) {
+            return true;
         }
     }
+
+    return false;
+}
+
+void moveSnake()
+{
+        // Shift body so each segment follows the previous one
+        for (uint8_t i = snakeLength; i > 0; i--) {
+            snake[i] = snake[i - 1];
+        }
+
+        // Update head position based on direction with  wrap-around.
+        switch (gameState.currentDirection) {
+            case UP:
+                // If at the top and moving up => wrap to bottom
+                if (snake[0].y == 0) {
+                    snake[0].y = (uint8_t)(GRID_SIZE - 1);
+                } else {
+                    snake[0].y = (uint8_t)(snake[0].y - 1);
+                }
+                break;
+            case DOWN:
+                // If at the bottom and moving down => wrap to top
+                if (snake[0].y == GRID_SIZE - 1) {
+                    snake[0].y = 0;
+                } else {
+                    snake[0].y = (uint8_t)(snake[0].y + 1);
+                }
+                break;
+            case LEFT:
+                if (snake[0].x == 0) {
+                    snake[0].x = (uint8_t)(GRID_SIZE - 1);
+                } else {
+                    snake[0].x = (uint8_t)(snake[0].x - 1);
+                }
+                break;
+            case RIGHT:
+                if (snake[0].x == GRID_SIZE - 1) {
+                    snake[0].x = 0;
+                } else {
+                    snake[0].x = (uint8_t)(snake[0].x + 1);
+                }
+                break;
+        }
+
+        if(isColliding()) {
+            gameState.isRunning = false;
+        } else {
+            //Check if head is covering fruit
+            for(int i = 0; i < fruitSize; i ++) {
+                if(snake[0].x == fruit[i].x && snake[0].y == fruit[i].y) {
+                    eatFruit(i);
+                }
+            }
+        }
 }
