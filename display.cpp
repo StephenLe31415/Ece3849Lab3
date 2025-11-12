@@ -33,6 +33,12 @@ static inline void drawCell(uint8_t gx, uint8_t gy, uint32_t color)
     GrRectFill(&gContext, &r);
 }
 
+void drawFruit() {
+    for(uint8_t i = 0; i < fruitSize; i ++) {
+        drawCell(fruit[i].x, fruit[i].y, ClrRed);
+    }
+}
+
 void DrawGame(const SnakeGameState* state)
 {
     (void)state; // not used for minimal version yet
@@ -46,6 +52,8 @@ void DrawGame(const SnakeGameState* state)
     for (uint8_t i = 0; i < snakeLength; ++i) {
         drawCell(snake[i].x, snake[i].y, i == 0 ? ClrGreen : ClrYellow);
     }
+
+    drawFruit();
 
 #ifdef GrFlush
     GrFlush(&gContext);

@@ -11,3 +11,4 @@ void DrawGame(const SnakeGameState* state);
 
 // Draw the score on the LCD
 void DrawScore(uint8_t);
+void drawFruit();

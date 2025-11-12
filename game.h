@@ -4,6 +4,9 @@
 #include <stdint.h>
 
 /********************** SNACK GENERATION AND MOVEMENT ****************** */
+#include <stdlib.h>
+#include <vector>
+
 // Direction for snake movement
 typedef enum { UP, DOWN, LEFT, RIGHT } Direction;
 
@@ -40,3 +43,11 @@ bool fruitEaten(void);              // Check if fruit is eaten
 void incrScore(bool, uint8_t);      // Increase score once the fruit is eaten
 void incrLen(bool, uint8_t);        // Increase snake lenght once the fruit is eaten
 
+extern Position fruit[MAX_LEN];
+extern uint8_t fruitSize;
+
+void generateFruitTick();
+
+// Basic API
+void ResetGame(void);
+void moveSnake(void);

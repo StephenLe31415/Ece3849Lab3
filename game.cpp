@@ -6,11 +6,20 @@ SnakeGameState gameState = { RIGHT, true, false };
 Position snake[MAX_LEN];
 uint8_t snakeLength = 4; // Start with a snake length of 4
 
+Position fruit[MAX_LEN];
+uint8_t fruitSize = 0;
+
 // If the coordinate goes below 0, move it to GRID_SIZE - 1.
 // If the coordinate reaches GRID_SIZE, move it back to 0.
 // Notes:
 //  - We use uint8_t; subtracting 1 from 0 would underflow to 255.
 //    To avoid underflow side effects, we check bounds before increment/decrement.
+
+void generateFruitTick() {
+    while(rand() < RAND_MAX / 6) {
+        fruit[fruitSize++] = Position{rand() % GRID_SIZE, rand() % GRID_SIZE};
+    }
+}
 
 void ResetGame(void)
 {
